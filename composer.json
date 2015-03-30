@@ -1,0 +1,25 @@
+{
+    "name": "consultnn/yii2-mongodb-embedded",
+    "description": "Yii2 behaviors implement handling of mongodb embedded documents",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ICC",
+            "email": "tech@consultnn.ru"
+        },
+        {
+          "name": "Sergey Sipatov",
+          "role": "developer",
+          "email": "sergey.sipatov@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+
+    },
+    "autoload": {
+      "psr-4": {
+        "consultnn\\embedded\\": "."
+      }
+    }
+}
