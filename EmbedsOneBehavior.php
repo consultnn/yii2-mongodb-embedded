@@ -1,78 +1,28 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sokrat
- * Date: 28.03.15
- * Time: 18:49
- */
 
 namespace consultnn\embedded;
 
-use yii\base\Model;
-use yii\mongodb\ActiveRecord;
-
 /**
  * Class EmbeddedOneBehavior
- * @property Model $model
- * @property \yii\mongodb\ActiveRecord $owner
+ * @property EmbeddedDocument $storage
  * @package common\behaviors
  */
 class EmbedsOneBehavior extends AbstractEmbeddedBehavior
 {
-    /**
-     * @var null|Model
-     */
-    private $_model = null;
-
-    public function __set($name, $value)
+    protected function setAttributes(array $attributes, $safeOnly = true)
     {
-        if ($this->checkName($name)) {
-            $this->model->scenario = $this->owner->scenario;
-            $this->model->setAttributes($value);
-
-            $this->owner->{$this->attribute} = $this->model->attributes;
-        } else {
-            parent::__set($name, $value);
-        }
-
-    }
-
-    public function __get($name)
-    {
-        if ($this->checkName($name)) {
-            return $this->model;
-        } else {
-            return parent::__get($name);
-        }
+        $this->storage->scenario = $this->owner->scenario;
+        $this->storage->setAttributes($attributes, $safeOnly);
     }
 
     /**
-     * @return Model
+     * @return EmbeddedDocument
      */
-    public function getModel()
+    public function getStorage()
     {
-        if (empty($this->_model)) {
-            $this->_model = new $this->embeddedClass;
-            $this->_model->scenario = $this->owner->scenario;
-            $this->_model->setAttributes($this->owner->{$this->attribute});
-            $this->owner->on(ActiveRecord::EVENT_BEFORE_VALIDATE, [$this, 'validate']);
-            $this->owner->on(ActiveRecord::EVENT_BEFORE_INSERT, [$this, 'proxy']);
-            $this->owner->on(ActiveRecord::EVENT_BEFORE_UPDATE, [$this, 'proxy']);
+        if (empty($this->_storage)) {
+            $this->_storage = new $this->embeddedClass;
         }
-        return $this->_model;
-    }
-
-    public function proxy($event)
-    {
-        $this->model->trigger($event->name);
-        $this->owner->{$this->attribute} = $this->model->attributes;
-    }
-
-    public function validate()
-    {
-        if (!$this->model->validate()) {
-            $this->owner->addError($this->attribute, \Yii::t('yii', 'Embedded document in {attribute} must be valid.'));
-            return false;
-        }
+        return $this->_storage;
     }
 }
