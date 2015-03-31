@@ -16,7 +16,6 @@ Yii2 behaviors implement handling of mongodb embedded documents
     'embeddedClass' => Phone::className()
 ],
 ~~~
-
 4. Use attribute without underscore in form or view
 ~~~
 echo $form->field($company->address, 'detail');
