@@ -22,6 +22,7 @@ class EmbedsOneBehavior extends AbstractEmbeddedBehavior
     {
         if (empty($this->_storage)) {
             $this->_storage = new $this->embeddedClass;
+            $this->_storage->formName = $this->getFormName();
         }
         return $this->_storage;
     }

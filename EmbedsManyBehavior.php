@@ -9,9 +9,14 @@ namespace consultnn\embedded;
  */
 class EmbedsManyBehavior extends AbstractEmbeddedBehavior
 {
+    public $initEmptyScenarios = [];
+
     protected function setAttributes(array $attributes, $safeOnly = true)
     {
         $this->storage->removeAll();
+        if (in_array($this->owner->scenario, $this->initEmptyScenarios) && !count($attributes)) {
+            $attributes[] = [];
+        }
         foreach($attributes as $modelAttributes)
         {
             /** @var EmbeddedDocument $model */
@@ -20,6 +25,7 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
             $model->setAttributes($modelAttributes, $safeOnly);
             $this->storage[] = $model;
         }
+
     }
 
     public function modelProcessing($model, $index)

@@ -50,7 +50,7 @@ class Storage extends Component implements StorageInterface, \Countable, \Iterat
                 $hasError = true;
             }
         }
-        return $hasError == false;
+        return !$hasError;
     }
 
     /**

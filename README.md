@@ -1,9 +1,9 @@
 Yii2 behaviors implement handling of mongodb embedded documents
 ===============================================================
 
-* Add attribute to model. Attribute must started with underscore.
-* Add safe rule for attribute without underscore.
-* Attach behavior
+* Add attribute with name starting with underscore to model.
+* Add "safe" validation rule for attribute without underscore in name..
+* Use attribute without underscore in name in forms or views
 ~~~
 'address' => [
     'class' => EmbedsOneBehavior::className(),
@@ -13,6 +13,7 @@ Yii2 behaviors implement handling of mongodb embedded documents
 'phones' => [
     'class' => EmbedsManyBehavior::className(),
     'attribute' => '_phones',
+    'initEmptyScenarios' => ['create', 'update'],
     'embeddedClass' => Phone::className()
 ],
 ~~~

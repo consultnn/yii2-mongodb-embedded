@@ -45,6 +45,15 @@ abstract class AbstractEmbeddedBehavior extends Behavior
      */
     abstract protected function setAttributes(array $attributes, $safeOnly = true);
 
+    public function events()
+    {
+        return [
+            ActiveRecord::EVENT_BEFORE_VALIDATE => 'validate',
+            ActiveRecord::EVENT_BEFORE_INSERT => 'proxy',
+            ActiveRecord::EVENT_BEFORE_UPDATE => 'proxy'
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -64,7 +73,6 @@ abstract class AbstractEmbeddedBehavior extends Behavior
     {
         if ($this->checkName($name)) {
             $this->setAttributes($value);
-            $this->attachEvents();
         } else {
             parent::__set($name, $value);
         }
@@ -136,15 +144,5 @@ abstract class AbstractEmbeddedBehavior extends Behavior
     protected function checkName($name)
     {
         return $this->fakeAttribute == $name;
-    }
-
-    /**
-     * Attache owner events to storage
-     */
-    protected function attachEvents()
-    {
-        $this->owner->on(ActiveRecord::EVENT_BEFORE_VALIDATE, [$this, 'validate']);
-        $this->owner->on(ActiveRecord::EVENT_BEFORE_INSERT, [$this, 'proxy']);
-        $this->owner->on(ActiveRecord::EVENT_BEFORE_UPDATE, [$this, 'proxy']);
     }
 }
