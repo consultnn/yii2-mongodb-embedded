@@ -7,6 +7,7 @@ use yii\base\Model;
 
 /**
  * Class EmbeddedDocument
+ * @property string $formName
  * @package consultnn\embedded
  */
 class EmbeddedDocument extends Model

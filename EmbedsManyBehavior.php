@@ -17,20 +17,17 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
         if (in_array($this->owner->scenario, $this->initEmptyScenarios) && !count($attributes)) {
             $attributes[] = [];
         }
+
         foreach($attributes as $modelAttributes)
         {
             /** @var EmbeddedDocument $model */
             $model = new $this->embeddedClass;
             $model->scenario = $this->owner->scenario;
+            $model->formName = $this->getFormName($this->storage->getNextIndex());
             $model->setAttributes($modelAttributes, $safeOnly);
             $this->storage[] = $model;
         }
 
-    }
-
-    public function modelProcessing($model, $index)
-    {
-        $model->formName = $this->getFormName($index);
     }
 
     /**
@@ -39,7 +36,7 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
     public function getStorage()
     {
         if (empty($this->_storage)) {
-            $this->_storage = new Storage(['callBack' => [$this, 'modelProcessing']]);
+            $this->_storage = new Storage();
         }
         return $this->_storage;
     }

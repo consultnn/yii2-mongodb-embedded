@@ -17,8 +17,6 @@ class Storage extends Component implements StorageInterface, \Countable, \Iterat
 
     private $_cursor = 0;
 
-    public $callBack = null;
-
     public function removeAll()
     {
         $this->_container = [];
@@ -108,10 +106,6 @@ class Storage extends Component implements StorageInterface, \Countable, \Iterat
             $offset = $this->getNextIndex();
         }
 
-        if (is_callable($this->callBack)) {
-            call_user_func($this->callBack, $model, $offset);
-        }
-
         $this->_container[$offset] = $model;
     }
 
@@ -162,7 +156,7 @@ class Storage extends Component implements StorageInterface, \Countable, \Iterat
         return count($this->_container);
     }
 
-    private function getNextIndex()
+    public function getNextIndex()
     {
         $count = count($this->_container);
         return $count ? $count : 0;
