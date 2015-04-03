@@ -27,7 +27,6 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
             $model->setAttributes($modelAttributes, $safeOnly);
             $this->storage[] = $model;
         }
-
     }
 
     /**

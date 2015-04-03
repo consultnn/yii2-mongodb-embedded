@@ -143,6 +143,6 @@ abstract class AbstractEmbeddedBehavior extends Behavior
      */
     protected function checkName($name)
     {
-        return $this->fakeAttribute == $name;
+        return $this->getFakeAttribute() == $name;
     }
 }
