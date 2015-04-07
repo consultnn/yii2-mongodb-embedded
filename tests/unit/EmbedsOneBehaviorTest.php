@@ -18,8 +18,8 @@ class EmbedsOneBehaviorTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->company = new MasterTestClass();
+        $this->company->deleteAll();
     }
-    
     
     /**
     * @dataProvider testSaveDataProvider
@@ -39,13 +39,9 @@ class EmbedsOneBehaviorTest extends \Codeception\TestCase\Test
     public function testSetValidateAttribute($arr, $isValidValue, $isValidName)
     {
         $this->company->setAttributes($arr);
-        
         $this->company->setScenario('valueV');
-        
         $this->assertEquals($this->company->validate(), $isValidValue);
-        
         $this->company->setScenario('nameV');
-        
         $this->assertEquals($this->company->validate(), $isValidName);
     }
     
@@ -56,11 +52,10 @@ class EmbedsOneBehaviorTest extends \Codeception\TestCase\Test
     {
         $this->company->setAttributes($data);
         $branch = new SlaveEmbeddedClass();
-        $branch->name = $insert[0];
-        $branch->value = $insert[1];
+        $branch->setAttributes(['name' => $insert[0], 'value' => $insert[1]]);
         $this->company->many->set($condition, $branch);
-        $this->assertEquals($this->company->many->get($insertCondition)->value, $insert[1]);
         $this->assertEquals($this->company->many->get($insertCondition)->name, $insert[0]);
+        $this->assertEquals($this->company->many->get($insertCondition)->value, $insert[1]);
     }
     
     public function testEmptyScenario()
@@ -76,26 +71,60 @@ class EmbedsOneBehaviorTest extends \Codeception\TestCase\Test
     public function testCompanyDataProvider()
     {
         return [
-            [['_id' => 1, 'one' => ['name'=>1, 'value' => 1], 'many' => [['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1]]],true,true],
-            [['_id' => 2, 'one' => ['name'=>2, 'value' => 2], 'many' => [['name'=>2, 'value' => 2],['name'=>'foo', 'value' => 2],['name'=>2, 'value' => 2],['name'=>2, 'value' => 2],['name'=>2, 'value' => 2],['name'=>2, 'value' => 2]]],false,false],
-            [['_id' => 3, 'one' => ['name'=>3, 'value' => 3], 'many' => [['name'=>3, 'value' => 3],['name'=>'foo', 'value' => 3],['name'=>3, 'value' => 3],['name'=>3, 'value' => 3],['name'=>3, 'value' => 3]]],false,false],
-            [['_id' => 4, 'one' => ['name'=>4, 'value' => 4], 'many' => [['name'=>4, 'value' => 4],['name'=>'foo', 'value' => 4],['name'=>4, 'value' => 4],['name'=>4, 'value' => 4]]],false,false],
-            [['_id' => 5, 'one' => ['name'=>5, 'value' => 5], 'many' => [['name'=>5, 'value' => 5],['name'=>'foo', 'value' => 5],['name'=>5, 'value' => 5]]],false,false],
-            [['_id' => 6, 'one' => ['name'=>6, 'value' => 6], 'many' => [['name'=>6, 'value' => 6],['name'=>'foo', 'value' => 6]]],false,false],
-            [['_id' => 7, 'one' => ['name'=>7, 'value' => 7], 'many' => [['name'=>7, 'value' => 7]]],false,true],
+            [
+                'data' => ['_id' => 1, 'one' => ['name'=>1, 'value' => 1], 'many' => [['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1]]],
+                'isValidValue' => true,
+                'isValidName' => true
+            ],
+            [
+                'data' => ['_id' => 2, 'one' => ['name'=>2, 'value' => 547], 'many' => [['name'=>2, 'value' => false],['name'=>2, 'value' => true],['name'=>2, 'value' => true],['name'=>2, 'value' => false],['name'=>2, 'value' => false],['name'=>2, 'value' => false]]],
+                'isValidValue' => false,
+                'isValidName' => true
+            ],
+            [
+                'data' => ['_id' => 3, 'one' => ['name'=>3, 'value' => false], 'many' => [['name'=>3, 'value' => false],['name'=>'foo', 'value' => false],['name'=>3, 'value' => true],['name'=>3, 'value' => false],['name'=>3, 'value' => true]]],
+                'isValidValue' => true,
+                'isValidName' => false
+            ],
+            [
+                'data' => ['_id' => 4, 'one' => ['name'=>4, 'value' => 4], 'many' => [['name'=>4, 'value' => 4],['name'=>'foo', 'value' => 4],['name'=>4, 'value' => 4],['name'=>4, 'value' => 4]]],
+                'isValidValue' => false,
+                'isValidName' => false
+            ],
         ];
     }
     
     public function testSaveDataProvider()
     {
         return [
-            [['_id' => 1, 'one' => ['name'=>1, 'value' => 1], 'many' => [['name'=>1, 'value' => 1],['name'=>1, 'value' => 1]]],['_id' => 1, 'one' => ['name'=>7, 'value' => 7], 'many' => [['name'=>7, 'value' => 7]]]],
-            [['_id' => 2, 'one' => ['name'=>2, 'value' => 2], 'many' => [['name'=>2, 'value' => 2],['name'=>2, 'value' => 2]]],['_id' => 2, 'one' => ['name'=>6, 'value' => 6], 'many' => [['name'=>6, 'value' => 6],['name'=>6, 'value' => 6]]]],
-            [['_id' => 3, 'one' => ['name'=>3, 'value' => 3], 'many' => [['name'=>3, 'value' => 3],['name'=>3, 'value' => 3]]],['_id' => 3, 'one' => ['name'=>5, 'value' => 5], 'many' => [['name'=>5, 'value' => 5],['name'=>5, 'value' => 5]]]],
-            [['_id' => 4, 'one' => ['name'=>4, 'value' => 4], 'many' => [['name'=>4, 'value' => 4],['name'=>4, 'value' => 4]]],['_id' => 4, 'one' => ['name'=>4, 'value' => 4], 'many' => [['name'=>4, 'value' => 4],['name'=>4, 'value' => 4]]]],
-            [['_id' => 5, 'one' => ['name'=>5, 'value' => 5], 'many' => [['name'=>5, 'value' => 5],['name'=>5, 'value' => 5]]],['_id' => 5, 'one' => ['name'=>3, 'value' => 3], 'many' => [['name'=>3, 'value' => 3],['name'=>3, 'value' => 3]]]],
-            [['_id' => 6, 'one' => ['name'=>6, 'value' => 6], 'many' => [['name'=>6, 'value' => 6],['name'=>6, 'value' => 6]]],['_id' => 6, 'one' => ['name'=>2, 'value' => 2], 'many' => [['name'=>2, 'value' => 2],['name'=>2, 'value' => 2]]]],
-            [['_id' => 7, 'one' => ['name'=>7, 'value' => 7], 'many' => [['name'=>7, 'value' => 7]]],['_id' => 7, 'one' => ['name'=>1, 'value' => 1], 'many' => [['name'=>1, 'value' => 1],['name'=>1, 'value' => 1]]]],
+            [
+                'baseData' => ['_id' => 1, 'one' => ['name'=>1, 'value' => 1], 'many' => [['name'=>1, 'value' => 1],['name'=>1, 'value' => 1]]],
+                'saveData' => ['_id' => 1, 'one' => ['name'=>7, 'value' => 7], 'many' => [['name'=>7, 'value' => 7]]]
+            ],
+            [
+                'baseData' => ['_id' => 2, 'one' => ['name'=>2, 'value' => 2], 'many' => [['name'=>2, 'value' => 2],['name'=>2, 'value' => 2]]],
+                'saveData' => ['_id' => 2, 'one' => ['name'=>6, 'value' => 6], 'many' => [['name'=>6, 'value' => 6],['name'=>6, 'value' => 6]]]
+            ],
+            [
+                'baseData' => ['_id' => 3, 'one' => ['name'=>3, 'value' => 3], 'many' => [['name'=>3, 'value' => 3],['name'=>3, 'value' => 3]]],
+                'saveData' => ['_id' => 3, 'one' => ['name'=>5, 'value' => 5], 'many' => [['name'=>5, 'value' => 5],['name'=>5, 'value' => 5]]]
+            ],
+            [
+                'baseData' => ['_id' => 4, 'one' => ['name'=>4, 'value' => 4], 'many' => [['name'=>4, 'value' => 4],['name'=>4, 'value' => 4]]],
+                'saveData' => ['_id' => 4, 'one' => ['name'=>4, 'value' => 4], 'many' => [['name'=>4, 'value' => 4],['name'=>4, 'value' => 4]]]
+            ],
+            [
+                'baseData' => ['_id' => 5, 'one' => ['name'=>5, 'value' => 5], 'many' => [['name'=>5, 'value' => 5],['name'=>5, 'value' => 5]]],
+                'saveData' => ['_id' => 5, 'one' => ['name'=>3, 'value' => 3], 'many' => [['name'=>3, 'value' => 3],['name'=>3, 'value' => 3]]]
+            ],
+            [
+                'baseData' => ['_id' => 6, 'one' => ['name'=>6, 'value' => 6], 'many' => [['name'=>6, 'value' => 6],['name'=>6, 'value' => 6]]],
+                'saveData' => ['_id' => 6, 'one' => ['name'=>2, 'value' => 2], 'many' => [['name'=>2, 'value' => 2],['name'=>2, 'value' => 2]]]
+            ],
+            [
+                'baseData' => ['_id' => 7, 'one' => ['name'=>7, 'value' => 7], 'many' => [['name'=>7, 'value' => 7]]],
+                'saveData' => ['_id' => 7, 'one' => ['name'=>1, 'value' => 1], 'many' => [['name'=>1, 'value' => 1],['name'=>1, 'value' => 1]]]
+            ],
         ];
     }
     
@@ -103,8 +132,18 @@ class EmbedsOneBehaviorTest extends \Codeception\TestCase\Test
     {
         return [
             
-            [['_id' => 2, 'one' => ['name'=>3, 'value' => 2], 'many' => [['name'=>4, 'value' => 2],['name'=>'foo', 'value' => 2],['name'=>5, 'value' => 2],['name'=>2, 'value' => 2],['name'=>2, 'value' => 2],['name'=>2, 'value' => 2]]],['value', 2],[999, 'foo'], ['name', 999]],
-            [['_id' => 3, 'one' => ['name'=>3, 'value' => 3], 'many' => [['name'=>3, 'value' => 3],['name'=>'foo', 'value' => 3],['name'=>3, 'value' => 3],['name'=>3, 'value' => 3],['name'=>3, 'value' => 3]]],['name', 'foo'],['abc', 'gfr'], ['value', 'gfr']],
+            [
+                'initData' => ['_id' => 2, 'one' => ['name'=>3, 'value' => 2], 'many' => [['name'=>4, 'value' => 2],['name'=>'foo', 'value' => 2],['name'=>5, 'value' => 2],['name'=>2, 'value' => 2],['name'=>2, 'value' => 2],['name'=>2, 'value' => 2]]],
+                'insertCondition' => ['value', 2],
+                'insertData' => [999, 'foo'],
+                'selectData' => ['name', 999]
+            ],
+            [
+                'initData' => ['_id' => 3, 'one' => ['name'=>3, 'value' => 3], 'many' => [['name'=>3, 'value' => 3],['name'=>'foo', 'value' => 3],['name'=>3, 'value' => 3],['name'=>3, 'value' => 3],['name'=>3, 'value' => 3]]],
+                'insertCondition' => ['name', 'foo'],
+                'insertData' => ['abc', 'gfr'],
+                'selectData' => ['value', 'gfr']
+            ],
         ];
     }
 }

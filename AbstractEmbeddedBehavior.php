@@ -106,6 +106,7 @@ abstract class AbstractEmbeddedBehavior extends Behavior
      */
     public function proxy($event)
     {
+        $this->storage->setScenario($this->owner->scenario);
         $this->storage->trigger($event->name, $event);
         $this->owner->{$this->attribute} = $this->storage->attributes;
     }
@@ -115,6 +116,7 @@ abstract class AbstractEmbeddedBehavior extends Behavior
      */
     public function validate()
     {
+        $this->storage->setScenario($this->owner->scenario);
         if (!$this->storage->validate()) {
             $this->owner->addError($this->attribute, \Yii::t('yii', 'Embedded document in {attribute} must be valid.'));
         }

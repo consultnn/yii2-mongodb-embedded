@@ -29,5 +29,11 @@ interface StorageInterface extends \ArrayAccess
      * @return array
      */
     public function getAttributes();
+    
+    /**
+     * Set scenario
+     * @return array
+     */
+    public function setScenario($scenario);
 
 }

@@ -2,7 +2,7 @@ Yii2 behaviors implement handling of mongodb embedded documents
 ===============================================================
 
 * Add attribute with name starting with underscore to model.
-* Add "safe" validation rule for attribute without underscore in name..
+* Add "safe" validation rule for attribute without underscore in name.
 * Use attribute without underscore in name in forms or views
 ~~~
 'address' => [
@@ -17,6 +17,35 @@ Yii2 behaviors implement handling of mongodb embedded documents
     'embeddedClass' => Phone::className()
 ],
 ~~~
+* You due to inherit classes of embedded document from EmbeddedDocument class.
+* You can extend method rules in embedded document class and set scenarios for params. Extend method Scenario is not nessesary.
+~~~
+class SlaveEmbeddedClass extends EmbeddedDocument 
+{
+    public $name;
+    public $value;
+    
+    public function rules()
+    {
+        return [
+            [['value'], 'boolean', 'on' => 'valueV'],
+            [['name'], 'integer', 'on' => 'nameV'],
+            [['name', 'value'], 'safe', 'on'=>'default']
+        ];
+    }
+}
+~~~
+* If you specified scenarios for params in embedded document model, you due to extend scenarios method on base document model and specify this scenarios.
+~~~
+public function scenarios() 
+{
+    $scenarios = parent::scenarios();
+    $scenarios['nameV'] = ['name'];
+    $scenarios['valueV'] =  ['value'];
+    return $scenarios;
+}
+~~~
+* For create empty embedded document you dou to set Sceanrio from base document with one of the parameters specified in the EmbedsManyBehavior
 * Use attribute without underscore in form or view
 ~~~
 echo $form->field($company->address, 'detail');

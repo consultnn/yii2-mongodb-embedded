@@ -161,5 +161,16 @@ class Storage extends Component implements StorageInterface, \Countable, \Iterat
         $count = count($this->_container);
         return $count ? $count : 0;
     }
-
+    
+    /**
+    * Set scenario to embedded model
+    * @param string $scenario
+    */
+    public function setScenario($scenario)
+    {
+        foreach ($this->_container as $model) {
+            /** @var EmbeddedDocument $model */
+            $model->setScenario($scenario);
+        }
+    }
 }
