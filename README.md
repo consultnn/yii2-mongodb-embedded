@@ -18,7 +18,7 @@ Yii2 behaviors implement handling of mongodb embedded documents
 ],
 ~~~
 * You due to inherit classes of embedded document from EmbeddedDocument class.
-* You can extend method rules in embedded document class and set scenarios for params. Extend method Scenario is not nessesary.
+* You can extend method rules in embedded document class and set scenarios for params. Extend method Scenario is not necessary.
 ~~~
 class SlaveEmbeddedClass extends EmbeddedDocument 
 {
@@ -35,17 +35,7 @@ class SlaveEmbeddedClass extends EmbeddedDocument
     }
 }
 ~~~
-* If you specified scenarios for params in embedded document model, you due to extend scenarios method on base document model and specify this scenarios.
-~~~
-public function scenarios() 
-{
-    $scenarios = parent::scenarios();
-    $scenarios['nameV'] = ['name'];
-    $scenarios['valueV'] =  ['value'];
-    return $scenarios;
-}
-~~~
-* For create empty embedded document you dou to set Sceanrio from base document with one of the parameters specified in the EmbedsManyBehavior
+* For create empty embedded document you dou to set scenario from base document with one of the parameters specified in the EmbedsManyBehavior
 * Use attribute without underscore in form or view
 ~~~
 echo $form->field($company->address, 'detail');
