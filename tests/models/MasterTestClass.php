@@ -15,13 +15,13 @@ class MasterTestClass extends ActiveRecord {
             'one' => [
                 'class' => EmbedsOneBehavior::className(),
                 'attribute' => '_one',
-                'embeddedClass' => SlaveEmbeddedClass::className()
+                'embedded' => SlaveEmbeddedClass::className()
                 ],
             'many' => [
                 'class' => EmbedsManyBehavior::className(),
                 'attribute' => '_many',
                 'initEmptyScenarios' => ['create', 'update'],
-                'embeddedClass' => SlaveEmbeddedClass::className()
+                'embedded' => SlaveEmbeddedClass::className()
             ],
         ];
     }

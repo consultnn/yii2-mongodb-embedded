@@ -21,9 +21,13 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
         foreach($attributes as $modelAttributes)
         {
             /** @var EmbeddedDocument $model */
-            $model = new $this->embeddedClass;
+            $model = \Yii::createObject(array_merge(
+                $this->getEmbeddedConfig(),
+                [
+                    'formName' => $this->getFormName($this->storage->getNextIndex())
+                ]
+            ));
             $model->scenario = $this->owner->scenario;
-            $model->formName = $this->getFormName($this->storage->getNextIndex());
             $model->setAttributes($modelAttributes, $safeOnly);
             $this->storage[] = $model;
         }

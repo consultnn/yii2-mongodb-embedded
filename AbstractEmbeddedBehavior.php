@@ -25,7 +25,7 @@ abstract class AbstractEmbeddedBehavior extends Behavior
      * Embedded document class name
      * @var string
      */
-    public $embeddedClass;
+    public $embedded;
 
     /**
      * @var mixed
@@ -146,5 +146,16 @@ abstract class AbstractEmbeddedBehavior extends Behavior
     protected function checkName($name)
     {
         return $this->getFakeAttribute() == $name;
+    }
+
+    protected function getEmbeddedConfig()
+    {
+        if (is_array($this->embedded)) {
+            $embeddedConfig = $this->embedded;
+        } else {
+            $embeddedConfig = ['class' => $this->embedded];
+        }
+
+        return $embeddedConfig;
     }
 }

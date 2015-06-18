@@ -21,8 +21,7 @@ class EmbedsOneBehavior extends AbstractEmbeddedBehavior
     public function getStorage()
     {
         if (empty($this->_storage)) {
-            $this->_storage = new $this->embeddedClass;
-            $this->_storage->formName = $this->getFormName();
+            $this->_storage = \Yii::createObject(array_merge($this->getEmbeddedConfig(), ['formName' => $this->getFormName()]));
         }
         return $this->_storage;
     }
