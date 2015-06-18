@@ -44,15 +44,7 @@ class MasterTestClass extends ActiveRecord {
     public function rules()
     {
         return [
-            [['_id', 'one', 'many'], 'safe']
+            [['_id', 'one', 'many'], 'safe', 'on' => ['default', 'requiredName', 'requiredValue']]
         ];
-    }
-    
-    public function scenarios() 
-    {
-        $scenarios = parent::scenarios();
-        $scenarios['nameV'] = ['name'];
-        $scenarios['valueV'] =  ['value'];
-        return $scenarios;
     }
 }

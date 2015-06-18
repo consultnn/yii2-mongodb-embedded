@@ -22,8 +22,8 @@ class SlaveEmbeddedClass extends EmbeddedDocument
     public function rules()
     {
         return [
-            [['value'], 'boolean', 'on' => 'valueV'],
-            [['name'], 'integer', 'on' => 'nameV'],
+            ['value', 'boolean', 'on' => 'requiredValue'],
+            ['name', 'integer', 'on' => 'requiredName'],
             [['name', 'value'], 'safe', 'on'=>'default']
         ];
     }

@@ -14,7 +14,7 @@ return [
         ],
         'mongodb' => [
             'class' => 'yii\mongodb\Connection',
-            'dsn' => 'mongodb://salenn_mongodb_1:27017/salenn_test',
+            'dsn' => 'mongodb://mongo:27017/mongodb_embedded_test',
         ],
     ],
 ];

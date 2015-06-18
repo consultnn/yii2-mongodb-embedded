@@ -39,9 +39,9 @@ class EmbedsOneBehaviorTest extends \Codeception\TestCase\Test
     public function testSetValidateAttribute($arr, $isValidValue, $isValidName)
     {
         $this->company->setAttributes($arr);
-        $this->company->setScenario('valueV');
+        $this->company->setScenario('requiredValue');
         $this->assertEquals($this->company->validate(), $isValidValue);
-        $this->company->setScenario('nameV');
+        $this->company->setScenario('requiredName');
         $this->assertEquals($this->company->validate(), $isValidName);
     }
     
@@ -72,22 +72,60 @@ class EmbedsOneBehaviorTest extends \Codeception\TestCase\Test
     {
         return [
             [
-                'data' => ['_id' => 1, 'one' => ['name'=>1, 'value' => 1], 'many' => [['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1],['name'=>1, 'value' => 1]]],
+                'data' => ['_id' => 1,
+                    'one' => ['name'=>1, 'value' => 1],
+                    'many' => [
+                        ['name'=>1, 'value' => 1],
+                        ['name'=>1, 'value' => 1],
+                        ['name'=>1, 'value' => 1],
+                        ['name'=>1, 'value' => 1],
+                        ['name'=>1, 'value' => 1],
+                        ['name'=>1, 'value' => 1],
+                        ['name'=>1, 'value' => 1]
+                    ]
+                ],
                 'isValidValue' => true,
                 'isValidName' => true
             ],
             [
-                'data' => ['_id' => 2, 'one' => ['name'=>2, 'value' => 547], 'many' => [['name'=>2, 'value' => false],['name'=>2, 'value' => true],['name'=>2, 'value' => true],['name'=>2, 'value' => false],['name'=>2, 'value' => false],['name'=>2, 'value' => false]]],
+                'data' => ['_id' => 2,
+                    'one' => ['name'=>2, 'value' => 547],
+                    'many' => [
+                        ['name'=>2, 'value' => false],
+                        ['name'=>2, 'value' => true],
+                        ['name'=>2, 'value' => true],
+                        ['name'=>2, 'value' => false],
+                        ['name'=>2, 'value' => false],
+                        ['name'=>2, 'value' => false]
+                    ]
+                ],
                 'isValidValue' => false,
                 'isValidName' => true
             ],
             [
-                'data' => ['_id' => 3, 'one' => ['name'=>3, 'value' => false], 'many' => [['name'=>3, 'value' => false],['name'=>'foo', 'value' => false],['name'=>3, 'value' => true],['name'=>3, 'value' => false],['name'=>3, 'value' => true]]],
+                'data' => ['_id' => 3,
+                    'one' => ['name'=>3, 'value' => false],
+                    'many' => [
+                        ['name'=>3, 'value' => false],
+                        ['name'=>'foo', 'value' => false],
+                        ['name'=>3, 'value' => true],
+                        ['name'=>3, 'value' => false],
+                        ['name'=>3, 'value' => true]
+                    ]
+                ],
                 'isValidValue' => true,
                 'isValidName' => false
             ],
             [
-                'data' => ['_id' => 4, 'one' => ['name'=>4, 'value' => 4], 'many' => [['name'=>4, 'value' => 4],['name'=>'foo', 'value' => 4],['name'=>4, 'value' => 4],['name'=>4, 'value' => 4]]],
+                'data' => ['_id' => 4,
+                    'one' => ['name'=>4, 'value' => 4],
+                    'many' => [
+                        ['name'=>4, 'value' => 4],
+                        ['name'=>'foo', 'value' => 4],
+                        ['name'=>4, 'value' => 4],
+                        ['name'=>4, 'value' => 4]
+                    ]
+                ],
                 'isValidValue' => false,
                 'isValidName' => false
             ],

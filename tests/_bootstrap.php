@@ -13,8 +13,6 @@ require_once(__DIR__ . '/../../../../vendor/autoload.php');
 
 require_once(__DIR__ . '/../../../../vendor/yiisoft/yii2/Yii.php');
 
-require(__DIR__ . '/../../../../common/config/aliases.php');
-
 $config = require('_config.php');
 
 (new yii\web\Application($config));

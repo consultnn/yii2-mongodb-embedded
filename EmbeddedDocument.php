@@ -96,7 +96,7 @@ class EmbeddedDocument extends Model
 
     public function setScenario($scenario)
     {
-        if (in_array($scenario, $this->scenarios())) {
+        if (array_key_exists($scenario, $this->scenarios())) {
             parent::setScenario($scenario);
         }
     }
