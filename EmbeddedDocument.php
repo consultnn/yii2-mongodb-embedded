@@ -91,7 +91,7 @@ class EmbeddedDocument extends Model
         if (!isset($this->_source) || !$this->primaryModel->hasAttribute($this->_source)) {
             throw new UnknownPropertyException('source attribute is not set or not exists');
         }
-        $this->primaryModel->updateAttributes([$this->_source]);
+        $this->primaryModel->save(false, [$this->_source]);
     }
 
     public function setScenario($scenario)
