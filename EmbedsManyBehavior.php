@@ -35,10 +35,16 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
     {
         if (empty($this->_storage)) {
             $this->_storage = new Storage();
-            foreach ((array)$this->owner->{$this->attribute} as $attributes) {
-                $model = $this->createEmbedded($attributes, false);
+
+            $attributes = (array)$this->owner->{$this->attribute};
+            if (empty($attributes) && in_array($this->owner->scenario, $this->initEmptyScenarios)) {
+                $attributes[] = [];
+            }
+
+            foreach ($attributes as $modelAttributes) {
+                $model = $this->createEmbedded($modelAttributes, false);
                 $model->setFormName($this->getFormName($this->_storage->getNextIndex()));
-                $this->_storage[] = $this->createEmbedded($attributes, false);
+                $this->_storage[] = $model;
             }
         }
         return $this->_storage;

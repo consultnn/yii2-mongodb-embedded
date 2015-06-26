@@ -3,7 +3,7 @@ use consultnn\embedded\tests\models\MasterTestClass;
 use consultnn\embedded\tests\models\SlaveEmbeddedClass;
 
 
-class EmbedsOneBehaviorTest extends \Codeception\TestCase\Test
+class EmbedsTest extends \Codeception\TestCase\Test
 {
     /**
      * @var \UnitTester
@@ -11,7 +11,7 @@ class EmbedsOneBehaviorTest extends \Codeception\TestCase\Test
     protected $tester;
     /**
      *
-     * @var Company
+     * @var MasterTestClass
      */
     protected $company;
 
@@ -19,6 +19,27 @@ class EmbedsOneBehaviorTest extends \Codeception\TestCase\Test
     {
         $this->company = new MasterTestClass();
         $this->company->deleteAll();
+    }
+
+    public function testSaveNotChanged()
+    {
+        $data = ['_id' => 1,
+            '_one' => ['name'=>1, 'value' => 1],
+            '_many' => [
+                ['name'=>1, 'value' => 1],
+                ['name'=>1, 'value' => 1],
+                ['name'=>1, 'value' => 1],
+                ['name'=>1, 'value' => 1],
+                ['name'=>1, 'value' => 1],
+                ['name'=>1, 'value' => 1],
+                ['name'=>1, 'value' => 1]
+            ]
+        ];
+        $this->company->setAttributes($data, false);
+        $this->company->save();
+        $this->assertEquals($this->company->toArray(), $data);
+        $this->company->save();
+        $this->assertEquals($this->company->toArray(), $data);
     }
     
     /**
