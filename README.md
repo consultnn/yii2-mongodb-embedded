@@ -8,13 +8,13 @@ Yii2 behaviors implement handling of mongodb embedded documents
 'address' => [
     'class' => EmbedsOneBehavior::className(),
     'attribute' => '_address',
-    'embeddedClass' => Address::className()
+    'embedded' => Address::className()
 ],
 'phones' => [
     'class' => EmbedsManyBehavior::className(),
     'attribute' => '_phones',
     'initEmptyScenarios' => ['create', 'update'],
-    'embeddedClass' => Phone::className()
+    'embedded' => Phone::className()
 ],
 ~~~
 * Embedded documents must be inherited from EmbeddedDocument class.
