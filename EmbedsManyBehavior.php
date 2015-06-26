@@ -2,6 +2,8 @@
 
 namespace consultnn\embedded;
 
+use yii\helpers\Html;
+
 /**
  * Class EmbedsManyBehavior
  * @property Storage $storage
@@ -11,25 +13,18 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
 {
     public $initEmptyScenarios = [];
 
+    public function getFormName($index)
+    {
+        return Html::getInputName($this->owner, $this->fakeAttribute."[{$index}]");
+    }
+
     protected function setAttributes(array $attributes, $safeOnly = true)
     {
         $this->storage->removeAll();
-        if (in_array($this->owner->scenario, $this->initEmptyScenarios) && !count($attributes)) {
-            $attributes[] = [];
-        }
-
-        foreach($attributes as $modelAttributes)
-        {
-            /** @var EmbeddedDocument $model */
-            $model = \Yii::createObject(array_merge(
-                $this->getEmbeddedConfig(),
-                [
-                    'formName' => $this->getFormName($this->storage->getNextIndex())
-                ]
-            ));
-            $model->scenario = $this->owner->scenario;
-            $model->setAttributes($modelAttributes, $safeOnly);
-            $this->storage[] = $model;
+        foreach($attributes as $modelAttributes) {
+            $model = $this->createEmbedded($modelAttributes, $safeOnly);
+            $model->setFormName($this->getFormName($this->storage->getNextIndex()));
+            $this->storage[] = $this->createEmbedded($modelAttributes, $safeOnly);
         }
     }
 
@@ -40,6 +35,11 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
     {
         if (empty($this->_storage)) {
             $this->_storage = new Storage();
+            foreach ((array)$this->owner->{$this->attribute} as $attributes) {
+                $model = $this->createEmbedded($attributes, false);
+                $model->setFormName($this->getFormName($this->_storage->getNextIndex()));
+                $this->_storage[] = $this->createEmbedded($attributes, false);
+            }
         }
         return $this->_storage;
     }

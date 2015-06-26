@@ -60,9 +60,6 @@ abstract class AbstractEmbeddedBehavior extends Behavior
     public function __get($name)
     {
         if ($this->checkName($name)) {
-            if (empty($this->_storage)) {
-                $this->setAttributes((array)$this->owner->{$this->attribute}, false);
-            }
             return $this->storage;
         } else {
             return parent::__get($name);
@@ -75,20 +72,6 @@ abstract class AbstractEmbeddedBehavior extends Behavior
             $this->setAttributes($value);
         } else {
             parent::__set($name, $value);
-        }
-    }
-
-    /**
-     * return form name for every model
-     * @param null $index
-     * @return string
-     */
-    public function getFormName($index = null)
-    {
-        if ($index !== null) {
-            return Html::getInputName($this->owner, $this->fakeAttribute."[{$index}]");
-        } else {
-            return Html::getInputName($this->owner, $this->fakeAttribute);
         }
     }
 
@@ -148,14 +131,17 @@ abstract class AbstractEmbeddedBehavior extends Behavior
         return $this->getFakeAttribute() == $name;
     }
 
-    protected function getEmbeddedConfig()
+    protected function createEmbedded($attributes, $safeOnly = true)
     {
         if (is_array($this->embedded)) {
             $embeddedConfig = $this->embedded;
         } else {
             $embeddedConfig = ['class' => $this->embedded];
         }
-
-        return $embeddedConfig;
+        /** @var EmbeddedDocument $model */
+        $model = \Yii::createObject($embeddedConfig);
+        $model->scenario = $this->owner->scenario;
+        $model->setAttributes($attributes, $safeOnly);
+        return $model;
     }
 }

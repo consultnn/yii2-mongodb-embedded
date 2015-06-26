@@ -2,6 +2,8 @@
 
 namespace consultnn\embedded;
 
+use yii\helpers\Html;
+
 /**
  * Class EmbeddedOneBehavior
  * @property EmbeddedDocument $storage
@@ -21,7 +23,8 @@ class EmbedsOneBehavior extends AbstractEmbeddedBehavior
     public function getStorage()
     {
         if (empty($this->_storage)) {
-            $this->_storage = \Yii::createObject(array_merge($this->getEmbeddedConfig(), ['formName' => $this->getFormName()]));
+            $this->_storage = $this->createEmbedded((array)$this->owner->{$this->attribute});
+            $this->_storage->formName = Html::getInputName($this->owner, $this->fakeAttribute);
         }
         return $this->_storage;
     }
