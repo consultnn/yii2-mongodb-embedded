@@ -10,6 +10,7 @@ public function attributes()
 {
     return [
         '_address',
+        '_phones',
     ]
 }
 ~~~
@@ -21,7 +22,7 @@ public function attributes()
 public function rules()
 {
     return [
-            [['address'], 'safe'],
+            [['address', 'phones'], 'safe'],
         ]
 }
 ~~~
@@ -32,20 +33,24 @@ public function rules()
     'attribute' => '_address',
     'embedded' => Address::className()
 ],
+'phones' => [
+    'class' => EmbedsManyBehavior::className(),
+    'attribute' => '_phones',
+    'embedded' => Phone::className()
+],
 ~~~
 * Your embedded documents must be inherited from [EmbeddedDocument](EmbeddedDocument.php) class.
 ~~~
-class SlaveEmbeddedClass extends EmbeddedDocument 
+class Phone extends EmbeddedDocument 
 {
-    public $name;
-    public $value;
+    public $number;
+    public $type;
     
     public function rules()
     {
         return [
-            [['value'], 'boolean', 'on' => 'valueV'],
-            [['name'], 'integer', 'on' => 'nameV'],
-            [['name', 'value'], 'safe', 'on'=>'default']
+            [['number', 'type'], 'string'],
+            [['type'], 'in', 'range' => ['home', 'work']],
         ];
     }
 }
@@ -61,11 +66,11 @@ class SlaveEmbeddedClass extends EmbeddedDocument
 ~~~
 * Use attribute without underscore in form or view
 ~~~
+// Address
 echo $form->field($company->address, 'detail');
 echo $form->field($company->address, 'id')->hiddenInput();
-~~~
-or 
-~~~
+
+// Phones
 foreach($company->phones as $key => $phone) {
     echo $form->field($phone, 'number');
     echo $form->field($phone, 'type');
