@@ -63,7 +63,9 @@ class SlaveEmbeddedClass extends EmbeddedDocument
 ~~~
 echo $form->field($company->address, 'detail');
 echo $form->field($company->address, 'id')->hiddenInput();
-
+~~~
+or 
+~~~
 foreach($company->phones as $key => $phone) {
     echo $form->field($phone, 'number');
     echo $form->field($phone, 'type');
