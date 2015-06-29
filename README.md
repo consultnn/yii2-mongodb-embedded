@@ -2,22 +2,38 @@ Yii2 behaviors implement handling of mongodb embedded documents
 ===============================================================
 
 * Add attribute with name starting with underscore to model.
+~~~
+/**
+* @inheritdoc
+*/
+public function attributes()
+{
+    return [
+        '_address',
+    ]
+}
+~~~
 * Add "safe" validation rule for attribute without underscore in name.
-* Use attribute without underscore in name in forms or views
+~~~
+/**
+ * @inheritdoc
+ */
+public function rules()
+{
+    return [
+            [['address'], 'safe'],
+        ]
+}
+~~~
+* Add behavior with attribute name with underscore in name
 ~~~
 'address' => [
     'class' => EmbedsOneBehavior::className(),
     'attribute' => '_address',
     'embedded' => Address::className()
 ],
-'phones' => [
-    'class' => EmbedsManyBehavior::className(),
-    'attribute' => '_phones',
-    'initEmptyScenarios' => ['create', 'update'],
-    'embedded' => Phone::className()
-],
 ~~~
-* Embedded documents must be inherited from EmbeddedDocument class.
+* Your embedded documents must be inherited from [EmbeddedDocument](EmbeddedDocument.php) class.
 ~~~
 class SlaveEmbeddedClass extends EmbeddedDocument 
 {
@@ -35,6 +51,14 @@ class SlaveEmbeddedClass extends EmbeddedDocument
 }
 ~~~
 * To create empty embedded document set base document's scenario to the value listed in initEmptyScenarios parameter of EmbedsManyBehavior
+~~~
+'address' => [
+    'class' => EmbedsOneBehavior::className(),
+    'attribute' => '_address',
+    'initEmptyScenarios' => ['create', 'update'],
+    'embedded' => Address::className()
+],
+~~~
 * Use attribute without underscore in form or view
 ~~~
 echo $form->field($company->address, 'detail');
