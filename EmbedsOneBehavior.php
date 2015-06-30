@@ -23,7 +23,7 @@ class EmbedsOneBehavior extends AbstractEmbeddedBehavior
     public function getStorage()
     {
         if (empty($this->_storage)) {
-            $this->_storage = $this->createEmbedded((array)$this->owner->{$this->attribute});
+            $this->_storage = $this->createEmbedded((array)$this->owner->{$this->attribute}, false);
             $this->_storage->formName = Html::getInputName($this->owner, $this->fakeAttribute);
         }
         return $this->_storage;
