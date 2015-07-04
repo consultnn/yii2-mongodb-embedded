@@ -48,7 +48,7 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
                 $model = $this->createEmbedded(
                     $modelAttributes,
                     false,
-                    ['formName' => $this->getFormName($this->storage->getNextIndex())]
+                    ['formName' => $this->getFormName($this->_storage->getNextIndex())]
                 );
                 $this->_storage[] = $model;
             }
