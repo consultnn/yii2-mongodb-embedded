@@ -131,13 +131,14 @@ abstract class AbstractEmbeddedBehavior extends Behavior
         return $this->getFakeAttribute() == $name;
     }
 
-    protected function createEmbedded($attributes, $safeOnly = true)
+    protected function createEmbedded($attributes, $safeOnly = true, $config = [])
     {
         if (is_array($this->embedded)) {
             $embeddedConfig = $this->embedded;
         } else {
             $embeddedConfig = ['class' => $this->embedded];
         }
+        $embeddedConfig = array_merge($embeddedConfig, $config);
         /** @var EmbeddedDocument $model */
         $model = \Yii::createObject($embeddedConfig);
         $model->scenario = $this->owner->scenario;
