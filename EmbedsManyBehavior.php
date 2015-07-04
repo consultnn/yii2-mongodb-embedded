@@ -24,7 +24,7 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
         foreach($attributes as $modelAttributes) {
             $model = $this->createEmbedded($modelAttributes, $safeOnly);
             $model->setFormName($this->getFormName($this->storage->getNextIndex()));
-            $this->storage[] = $this->createEmbedded($modelAttributes, $safeOnly);
+            $this->storage[] = $model;
         }
     }
 
