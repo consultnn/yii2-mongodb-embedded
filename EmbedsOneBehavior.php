@@ -26,7 +26,7 @@ class EmbedsOneBehavior extends AbstractEmbeddedBehavior
             $this->_storage = $this->createEmbedded(
                 (array)$this->owner->{$this->attribute},
                 false,
-                ['formName' => Html::getInputName($this->owner, $this->fakeAttribute)]
+                ['formName' => $this->setFormName ? Html::getInputName($this->owner, $this->fakeAttribute) : null]
             );
         }
         return $this->_storage;

@@ -28,6 +28,12 @@ abstract class AbstractEmbeddedBehavior extends Behavior
     public $embedded;
 
     /**
+     * If true, Embedded model formName look like this: Company['address']
+     * @var bool
+     */
+    public $setFormName = true;
+
+    /**
      * @var mixed
      */
     protected $_storage;

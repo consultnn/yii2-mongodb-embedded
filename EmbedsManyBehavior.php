@@ -15,7 +15,11 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
 
     public function getFormName($index)
     {
-        return Html::getInputName($this->owner, $this->fakeAttribute."[{$index}]");
+        if ($this->setFormName) {
+            return Html::getInputName($this->owner, $this->fakeAttribute."[{$index}]");
+        } else {
+            return null;
+        }
     }
 
     protected function setAttributes(array $attributes, $safeOnly = true)

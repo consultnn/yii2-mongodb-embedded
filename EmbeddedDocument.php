@@ -47,7 +47,9 @@ class EmbeddedDocument extends Model
      */
     public function setFormName($formName)
     {
-        $this->_formName = $formName;
+        if (!empty($formName)) {
+            $this->_formName = $formName;
+        }
     }
 
     /**
