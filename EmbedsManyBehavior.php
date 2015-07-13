@@ -15,7 +15,11 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
 
     public function getFormName($index)
     {
-        return Html::getInputName($this->owner, $this->fakeAttribute."[{$index}]");
+        if ($this->setFormName) {
+            return Html::getInputName($this->owner, $this->fakeAttribute."[{$index}]");
+        } else {
+            return null;
+        }
     }
 
     protected function setAttributes(array $attributes, $safeOnly = true)
@@ -48,7 +52,7 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
                 $model = $this->createEmbedded(
                     $modelAttributes,
                     false,
-                    ['formName' => $this->getFormName($this->storage->getNextIndex())]
+                    ['formName' => $this->getFormName($this->_storage->getNextIndex())]
                 );
                 $this->_storage[] = $model;
             }
