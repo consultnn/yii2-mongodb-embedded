@@ -16,9 +16,11 @@
     "minimum-stability": "dev",
     "require": {
         "yiisoft/yii2": "*",
-        "yiisoft/yii2-mongodb": "*",
-        "yiisoft/yii2-codeception": "*",
-        "codeception/codeception": "*"
+        "yiisoft/yii2-mongodb": "*"
+    },
+    "require-dev" : {
+      "yiisoft/yii2-codeception": "*",
+      "codeception/codeception": "*"
     },
     "autoload": {
       "psr-4": {
