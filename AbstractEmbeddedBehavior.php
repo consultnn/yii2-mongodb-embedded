@@ -105,9 +105,11 @@ abstract class AbstractEmbeddedBehavior extends Behavior
      */
     public function validate()
     {
-        $this->storage->setScenario($this->owner->scenario);
-        if (!$this->storage->validate()) {
-            $this->owner->addError($this->attribute, \Yii::t('yii', 'Embedded document in {attribute} must be valid.'));
+        if ($this->owner->isAttributeSafe($this->fakeAttribute)) {
+            $this->storage->setScenario($this->owner->scenario);
+            if (!$this->storage->validate()) {
+                $this->owner->addError($this->attribute, \Yii::t('yii', 'Embedded document in {attribute} must be valid.'));
+            }
         }
     }
 
