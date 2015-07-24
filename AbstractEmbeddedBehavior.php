@@ -49,7 +49,7 @@ abstract class AbstractEmbeddedBehavior extends Behavior
      * @param array $attributes
      * @param bool $safeOnly
      */
-    abstract protected function setAttributes(array $attributes, $safeOnly = true);
+    abstract protected function setAttributes($attributes, $safeOnly = true);
 
     public function events()
     {

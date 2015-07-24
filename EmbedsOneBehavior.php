@@ -11,7 +11,7 @@ use yii\helpers\Html;
  */
 class EmbedsOneBehavior extends AbstractEmbeddedBehavior
 {
-    protected function setAttributes(array $attributes, $safeOnly = true)
+    protected function setAttributes($attributes, $safeOnly = true)
     {
         $this->storage->scenario = $this->owner->scenario;
         $this->storage->setAttributes($attributes, $safeOnly);
