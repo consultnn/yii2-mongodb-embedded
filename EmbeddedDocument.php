@@ -102,4 +102,38 @@ class EmbeddedDocument extends Model
             parent::setScenario($scenario);
         }
     }
+
+    /**
+     * Checks if embedded model is empty.
+     * Doesn't take into account validator's "when" and "isEmpty" parameters.
+     *
+     * Проверяет объект на пустоту.
+     * Пустым считается объект все атрибуты которого пусты (empty($value)) или равны значениям по-умолчанию. Не учитывает параметры "when" и "isEmpty" валидаторов "по-умолчанию".
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        $notEmptyAttributes = [];
+        foreach ($this->attributes() as $atrribute)
+        {
+            if (!empty($this->$atrribute))
+                $notEmptyAttributes[$atrribute] = $atrribute;
+        }
+
+        foreach ($this->getActiveValidators() as $validator)
+        {
+            if (($validator instanceof \yii\validators\DefaultValueValidator) && ($checkAttributes = array_intersect($validator->attributes, $notEmptyAttributes)))
+            {
+                /** @var \yii\validators\DefaultValueValidator $validator */
+
+                foreach ($checkAttributes as $atrribute)
+                {
+                    if ($this->$atrribute == $validator->value)
+                        unset($notEmptyAttributes[$atrribute]);
+                }
+            }
+        }
+
+        return empty($notEmptyAttributes);
+    }
 }

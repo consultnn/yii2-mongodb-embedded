@@ -18,6 +18,17 @@ class EmbedsOneBehavior extends AbstractEmbeddedBehavior
     }
 
     /**
+     * @inheritdoc
+     */
+    protected function getAttributes()
+    {
+        if ($this->saveEmpty || !$this->storage->isEmpty())
+            return $this->storage->attributes;
+        else
+            return null;
+    }
+
+    /**
      * @return EmbeddedDocument
      */
     public function getStorage()

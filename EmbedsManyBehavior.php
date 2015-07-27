@@ -22,24 +22,35 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function setAttributes($attributes, $safeOnly = true)
     {
         $this->storage->removeAll();
 
-        if (!empty($attributes)) {
-            foreach($attributes as $modelAttributes) {
-                $model = $this->createEmbedded(
-                    $modelAttributes,
-                    $safeOnly,
-                    ['formName' => $this->getFormName($this->storage->getNextIndex())]
-                );
+        if (empty($attributes))
+            return;
+
+        foreach($attributes as $modelAttributes) {
+            $model = $this->createEmbedded(
+                $modelAttributes,
+                $safeOnly,
+                ['formName' => $this->getFormName($this->storage->getNextIndex())]
+            );
+
+            if ($this->saveEmpty || !$model->isEmpty()) {
                 $this->storage[] = $model;
             }
-        } else {
-            $this->storage->removeAll();
         }
+    }
 
-
+    /**
+     * @inheritdoc
+     */
+    protected function getAttributes()
+    {
+        return $this->storage->attributes;
     }
 
     /**

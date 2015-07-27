@@ -34,6 +34,15 @@ abstract class AbstractEmbeddedBehavior extends Behavior
     public $setFormName = true;
 
     /**
+     * Save empty embedded models to db. Emptyness is checked via EmbeddedDocument::isEmpty method.
+     *
+     * Сохранять ли пустые вложенные объекты в бд. Проверка на пустоту делается в методе EmbeddedDocument::isEmpty.
+     * @see EmbeddedDocument::isEmpty
+     * @var bool
+     */
+    public $saveEmpty = true;
+
+    /**
      * @var mixed
      */
     protected $_storage;
@@ -50,6 +59,14 @@ abstract class AbstractEmbeddedBehavior extends Behavior
      * @param bool $safeOnly
      */
     abstract protected function setAttributes($attributes, $safeOnly = true);
+
+    /**
+     * Return storage attributes.
+     *
+     * Возвращает данные для сохранения в бд.
+     * @return mixed
+     */
+    abstract protected function getAttributes();
 
     public function events()
     {
@@ -97,7 +114,7 @@ abstract class AbstractEmbeddedBehavior extends Behavior
     {
         $this->storage->setScenario($this->owner->scenario);
         $this->storage->trigger($event->name, $event);
-        $this->owner->{$this->attribute} = $this->storage->attributes;
+        $this->owner->{$this->attribute} = $this->getAttributes();
     }
 
     /**
