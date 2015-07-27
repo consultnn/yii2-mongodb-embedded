@@ -174,4 +174,9 @@ class Storage extends Component implements StorageInterface, \Countable, \Iterat
             $model->setScenario($scenario);
         }
     }
+
+    public function __toString()
+    {
+        return '';
+    }
 }
