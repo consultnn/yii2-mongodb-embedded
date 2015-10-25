@@ -43,12 +43,4 @@ class EmbedsOneBehavior extends AbstractEmbeddedBehavior
         }
         return $this->_storage;
     }
-
-    /**
-     * @inheritdoc
-     */
-    protected function addErrors()
-    {
-        $this->owner->addErrors($this->storage->getErrors());
-    }
 }

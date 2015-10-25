@@ -51,15 +51,6 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
     /**
      * @inheritdoc
      */
-    protected function addErrors()
-    {
-        $validator = new Validator();
-        $validator->addError($this->owner, $this->fakeAttribute, Yii::t('yii', '{attribute} is invalid.'));
-    }
-
-    /**
-     * @inheritdoc
-     */
     protected function getAttributes()
     {
         return $this->storage->attributes;

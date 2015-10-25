@@ -2,9 +2,10 @@
 
 namespace consultnn\embedded;
 
+use Yii;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
-use yii\helpers\Html;
+use yii\validators\Validator;
 
 /**
  * Class AbstractEmbeddedBehavior
@@ -59,12 +60,6 @@ abstract class AbstractEmbeddedBehavior extends Behavior
      * @param bool $safeOnly
      */
     abstract protected function setAttributes($attributes, $safeOnly = true);
-
-    /**
-     * Add validation errors to parent model
-     * @return mixed
-     */
-    abstract protected function addErrors();
 
     /**
      * Return storage attributes.
@@ -131,7 +126,10 @@ abstract class AbstractEmbeddedBehavior extends Behavior
         if ($this->owner->isAttributeSafe($this->fakeAttribute)) {
             $this->storage->setScenario($this->owner->scenario);
             if (!$this->storage->validate()) {
-                $this->addErrors();
+                $this->owner->addError(
+                    $this->fakeAttribute,
+                    Yii::t('yii', '{attribute} is invalid.', ['attribute' => $this->owner->getAttributeLabel($this->fakeAttribute)])
+                );
             }
         }
     }
