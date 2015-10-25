@@ -2,10 +2,10 @@
 
 namespace consultnn\embedded;
 
-
 use yii\base\Model;
 use yii\mongodb\ActiveRecord;
 use yii\base\UnknownPropertyException;
+use yii\validators\DefaultValueValidator;
 
 /**
  * Class EmbeddedDocument
@@ -114,26 +114,22 @@ class EmbeddedDocument extends Model
     public function isEmpty()
     {
         $notEmptyAttributes = [];
-        foreach ($this->attributes() as $atrribute)
-        {
-            if (!empty($this->$atrribute))
-                $notEmptyAttributes[$atrribute] = $atrribute;
-        }
-
-        foreach ($this->getActiveValidators() as $validator)
-        {
-            if (($validator instanceof \yii\validators\DefaultValueValidator) && ($checkAttributes = array_intersect($validator->attributes, $notEmptyAttributes)))
-            {
-                /** @var \yii\validators\DefaultValueValidator $validator */
-
-                foreach ($checkAttributes as $atrribute)
-                {
-                    if ($this->$atrribute == $validator->value)
-                        unset($notEmptyAttributes[$atrribute]);
-                }
+        foreach ($this->attributes() as $attribute) {
+            if (!empty($this->$attribute)) {
+                $notEmptyAttributes[$attribute] = $attribute;
             }
         }
 
+        foreach ($this->getActiveValidators() as $validator) {
+            if (($validator instanceof DefaultValueValidator) && ($checkAttributes = array_intersect($validator->attributes, $notEmptyAttributes))) {
+                /** @var \yii\validators\DefaultValueValidator $validator */
+                foreach ($checkAttributes as $attribute) {
+                    if ($this->$attribute == $validator->value) {
+                        unset($notEmptyAttributes[$attribute]);
+                    }
+                }
+            }
+        }
         return empty($notEmptyAttributes);
     }
 }
