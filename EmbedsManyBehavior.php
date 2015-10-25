@@ -3,6 +3,8 @@
 namespace consultnn\embedded;
 
 use yii\helpers\Html;
+use Yii;
+use yii\validators\Validator;
 
 /**
  * Class EmbedsManyBehavior
@@ -29,10 +31,11 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
     {
         $this->storage->removeAll();
 
-        if (empty($attributes))
+        if (empty($attributes)) {
             return;
+        }
 
-        foreach($attributes as $modelAttributes) {
+        foreach ($attributes as $modelAttributes) {
             $model = $this->createEmbedded(
                 $modelAttributes,
                 $safeOnly,
@@ -43,6 +46,15 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
                 $this->storage[] = $model;
             }
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function addErrors()
+    {
+        $validator = new Validator();
+        $validator->addError($this->owner, $this->fakeAttribute, Yii::t('yii', '{attribute} is invalid.'));
     }
 
     /**

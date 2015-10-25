@@ -22,10 +22,11 @@ class EmbedsOneBehavior extends AbstractEmbeddedBehavior
      */
     protected function getAttributes()
     {
-        if ($this->saveEmpty || !$this->storage->isEmpty())
+        if ($this->saveEmpty || !$this->storage->isEmpty()) {
             return $this->storage->attributes;
-        else
+        } else {
             return null;
+        }
     }
 
     /**
@@ -41,5 +42,13 @@ class EmbedsOneBehavior extends AbstractEmbeddedBehavior
             );
         }
         return $this->_storage;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function addErrors()
+    {
+        $this->owner->addErrors($this->storage->getErrors());
     }
 }

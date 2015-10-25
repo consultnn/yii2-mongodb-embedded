@@ -51,7 +51,7 @@ abstract class AbstractEmbeddedBehavior extends Behavior
      * set $_storage property and return it
      * @return mixed
      */
-    abstract function getStorage();
+    abstract public function getStorage();
 
     /**
      * Set attributes to storage
@@ -59,6 +59,12 @@ abstract class AbstractEmbeddedBehavior extends Behavior
      * @param bool $safeOnly
      */
     abstract protected function setAttributes($attributes, $safeOnly = true);
+
+    /**
+     * Add validation errors to parent model
+     * @return mixed
+     */
+    abstract protected function addErrors();
 
     /**
      * Return storage attributes.
@@ -125,7 +131,7 @@ abstract class AbstractEmbeddedBehavior extends Behavior
         if ($this->owner->isAttributeSafe($this->fakeAttribute)) {
             $this->storage->setScenario($this->owner->scenario);
             if (!$this->storage->validate()) {
-                $this->owner->addError($this->attribute, \Yii::t('yii', 'Embedded document in {attribute} must be valid.'));
+                $this->addErrors();
             }
         }
     }

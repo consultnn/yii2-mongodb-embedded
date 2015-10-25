@@ -138,16 +138,19 @@ class Storage extends Component implements StorageInterface, \Countable, \Iterat
         return $this->offsetExists($this->_cursor);
     }
 
-    public function offsetExists($offset) {
+    public function offsetExists($offset)
+    {
         return isset($this->_container[$offset]);
     }
 
-    public function offsetUnset($offset) {
+    public function offsetUnset($offset)
+    {
         unset($this->_container[$offset]);
         $this->_container = array_values($this->_container);
     }
 
-    public function offsetGet($offset) {
+    public function offsetGet($offset)
+    {
         return isset($this->_container[$offset]) ? $this->_container[$offset] : null;
     }
 
