@@ -43,6 +43,10 @@ abstract class AbstractEmbeddedBehavior extends Behavior
      */
     public $saveEmpty = true;
 
+    /**
+     * Default event handlers
+     * @var array
+     */
     public $events = [
         ActiveRecord::EVENT_BEFORE_VALIDATE => 'validate',
         ActiveRecord::EVENT_BEFORE_INSERT => 'proxy',
