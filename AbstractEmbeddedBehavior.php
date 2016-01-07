@@ -43,6 +43,12 @@ abstract class AbstractEmbeddedBehavior extends Behavior
      */
     public $saveEmpty = true;
 
+    public $events = [
+        ActiveRecord::EVENT_BEFORE_VALIDATE => 'validate',
+        ActiveRecord::EVENT_BEFORE_INSERT => 'proxy',
+        ActiveRecord::EVENT_BEFORE_UPDATE => 'proxy'
+    ];
+
     /**
      * @var mixed
      */
@@ -71,11 +77,7 @@ abstract class AbstractEmbeddedBehavior extends Behavior
 
     public function events()
     {
-        return [
-            ActiveRecord::EVENT_BEFORE_VALIDATE => 'validate',
-            ActiveRecord::EVENT_BEFORE_INSERT => 'proxy',
-            ActiveRecord::EVENT_BEFORE_UPDATE => 'proxy'
-        ];
+        return $this->events;
     }
 
     /**
