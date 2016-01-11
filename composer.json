@@ -8,9 +8,9 @@
             "email": "tech@consultnn.ru"
         },
         {
-          "name": "Sergey Sipatov",
-          "role": "developer",
-          "email": "sergey.sipatov@gmail.com"
+            "name": "Sergey Sipatov",
+            "role": "developer",
+            "email": "sergey.sipatov@gmail.com"
         }
     ],
     "minimum-stability": "stable",
@@ -18,12 +18,17 @@
         "yiisoft/yii2": "2.0.*"
     },
     "require-dev" : {
-      "yiisoft/yii2-codeception": "*",
-      "codeception/codeception": "*"
+        "yiisoft/yii2-codeception": "*",
+        "codeception/codeception": "*"
     },
     "autoload": {
-      "psr-4": {
-        "consultnn\\embedded\\": "."
-      }
+        "psr-4": {
+            "consultnn\\embedded\\": "."
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
     }
 }
