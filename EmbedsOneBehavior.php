@@ -11,6 +11,8 @@ use yii\helpers\Html;
  */
 class EmbedsOneBehavior extends AbstractEmbeddedBehavior
 {
+    public $dirtyAttributesFriendly = false;
+
     protected function setAttributes($attributes, $safeOnly = true)
     {
         $this->storage->scenario = $this->owner->scenario;
@@ -23,6 +25,12 @@ class EmbedsOneBehavior extends AbstractEmbeddedBehavior
     protected function getAttributes()
     {
         if ($this->saveEmpty || !$this->storage->isEmpty()) {
+            if ($this->dirtyAttributesFriendly) {
+                $values = $this->storage->attributes;
+                ksort($values);
+                return $values;
+            }
+
             return $this->storage->attributes;
         } else {
             return null;
@@ -42,5 +50,16 @@ class EmbedsOneBehavior extends AbstractEmbeddedBehavior
             );
         }
         return $this->_storage;
+    }
+
+    public function proxy($event)
+    {
+        parent::proxy($event);
+
+        if ($this->dirtyAttributesFriendly) {
+            $values = $this->owner->getOldAttribute($this->attribute);
+            ksort($values);
+            $this->owner->setOldAttribute($this->attribute, $values);
+        }
     }
 }
