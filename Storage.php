@@ -100,6 +100,17 @@ class Storage extends Component implements StorageInterface, \Countable, \Iterat
         return false;
     }
 
+    public function sort($field)
+    {
+        $attributes = $this->attributes;
+        if (empty($attributes) || !in_array($field, array_keys(reset($attributes)))) {
+            return;
+        }
+        usort($this->_container, function ($item1, $item2) use ($field) {
+            return $item1[$field] <=> $item2[$field];
+        });
+    }
+
     public function offsetSet($offset, $model)
     {
         if (is_null($offset)) {
