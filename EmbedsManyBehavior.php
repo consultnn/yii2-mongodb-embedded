@@ -15,18 +15,20 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
 {
     public $initEmptyScenarios = [];
 
+    #[\ReturnTypeWillChange]
     public function getFormName($index)
     {
         if ($this->setFormName) {
             return Html::getInputName($this->owner, $this->fakeAttribute."[{$index}]");
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
      * @inheritdoc
      */
+    #[\ReturnTypeWillChange]
     protected function setAttributes($attributes, $safeOnly = true)
     {
         $this->storage->removeAll();
@@ -51,6 +53,7 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
     /**
      * @inheritdoc
      */
+    #[\ReturnTypeWillChange]
     protected function getAttributes()
     {
         return $this->storage->attributes;
@@ -59,6 +62,7 @@ class EmbedsManyBehavior extends AbstractEmbeddedBehavior
     /**
      * @return Storage
      */
+    #[\ReturnTypeWillChange]
     public function getStorage()
     {
         if (empty($this->_storage)) {

@@ -14,7 +14,7 @@ interface StorageInterface extends \ArrayAccess
     /**
      * Triggers an event
      * @param string $name the event name
-     * @param Event $event the event parameter. If not set, a default [[Event]] object will be created.
+     * @param Event|null $event the event parameter. If not set, a default [[Event]] object will be created.
      */
     public function trigger($name, Event $event = null);
 

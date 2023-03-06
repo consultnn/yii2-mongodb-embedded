@@ -91,9 +91,9 @@ abstract class AbstractEmbeddedBehavior extends Behavior
     {
         if ($this->checkName($name)) {
             return $this->storage;
-        } else {
-            return parent::__get($name);
         }
+
+        return parent::__get($name);
     }
 
     public function __set($name, $value)

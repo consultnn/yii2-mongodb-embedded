@@ -33,6 +33,7 @@ class EmbeddedDocument extends Model
     /**
      * @inheritdoc
      */
+    #[\ReturnTypeWillChange]
     public function formName()
     {
         if (!empty($this->_formName)) {
@@ -45,6 +46,7 @@ class EmbeddedDocument extends Model
     /**
      * @param $formName
      */
+    #[\ReturnTypeWillChange]
     public function setFormName($formName)
     {
         if (!empty($formName)) {
@@ -56,6 +58,7 @@ class EmbeddedDocument extends Model
      * set link to primary model
      * @param ActiveRecord $model
      */
+    #[\ReturnTypeWillChange]
     public function setPrimaryModel(ActiveRecord $model)
     {
         $this->_primaryModel = $model;
@@ -66,6 +69,7 @@ class EmbeddedDocument extends Model
      * @return ActiveRecord
      * @throws UnknownPropertyException
      */
+    #[\ReturnTypeWillChange]
     public function getPrimaryModel()
     {
         if (!isset($this->_primaryModel)) {
@@ -79,6 +83,7 @@ class EmbeddedDocument extends Model
      * set link to primary model attribute
      * @param $value
      */
+    #[\ReturnTypeWillChange]
     public function setSource($value)
     {
         $this->_source = $value;
@@ -88,6 +93,7 @@ class EmbeddedDocument extends Model
      * Save embedded model as attribute on primary model
      * @throws UnknownPropertyException
      */
+    #[\ReturnTypeWillChange]
     public function save()
     {
         if (!isset($this->_source) || !$this->primaryModel->hasAttribute($this->_source)) {
@@ -96,6 +102,7 @@ class EmbeddedDocument extends Model
         $this->primaryModel->save(false, [$this->_source]);
     }
 
+    #[\ReturnTypeWillChange]
     public function setScenario($scenario)
     {
         if (array_key_exists($scenario, $this->scenarios())) {
@@ -111,6 +118,7 @@ class EmbeddedDocument extends Model
      * Пустым считается объект все атрибуты которого пусты (empty($value)) или равны значениям по-умолчанию. Не учитывает параметры "when" и "isEmpty" валидаторов "по-умолчанию".
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function isEmpty()
     {
         $notEmptyAttributes = [];
